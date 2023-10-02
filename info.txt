@@ -24,15 +24,4 @@ two signals per axis:
 - vis: high in visible area, low otherwise
 - sync: low during sync, high otherwise
 
-we get 1ms to write 4,800 characters at most. that means we need to be able to write 4,800,000 characters per second (4.8MHz!)
-if we only read from the char buffer every other frame, we get a whole ~16ms (1 frame) to write 4,800 chars. this is a much more reasonable 300ch/ms, or 300,000ch/sec (only 3 khz). this seems more doable
-
-how would this doublebuffer work? probably just a t or jk latch that we toggle every frame. when output is high, enable one ram/disable the other. when output is low, do opposite
-
-HARDWARE
-clock: 25.175mhz quartz clock
-clock divider: 4-bit counter that resets every 8 pulses (count to 7 / b0111) TI 74HC161N
-column counter: 8-bit counter that resets every 100 pulses (count to 99 / b0110 0011) TI 74HC161N x2
-line counter: 12-bit counter that resets every 525 pulses (count to 524 / b0010 0000 1100) TI 74HC161N x3
-
-can pull sync pulses by and-combos
+DO NOT! Drop top address lines when indexing pixels! That's where the funkiness comes from!
