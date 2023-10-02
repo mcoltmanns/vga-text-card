@@ -28,7 +28,7 @@ lines are used to count vertical timing
 
 video lines are only active when in visible area, otherwise low
 hsync is only low during hsync pulse, otherwise high
-vsync is only low during vsync pulse, otherwise
+vsync is only low during vsync pulse, otherwise 
 
 we get 1ms to write 4,800 characters at most. that means we need to be able to write 4,800,000 characters per second (4.8MHz!)
 if we only read from the char buffer every other frame, we get a whole ~16ms (1 frame) to write 4,800 chars. this is a much more reasonable 300ch/ms, or 300,000ch/sec (only 3 khz). this seems more doable
