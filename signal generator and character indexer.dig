@@ -43,30 +43,11 @@
       <elementAttributes>
         <entry>
           <string>Description</string>
-          <string>Pixel horizontal</string>
+          <string>Pixel coord
+bus</string>
         </entry>
       </elementAttributes>
-      <pos x="0" y="280"/>
-    </visualElement>
-    <visualElement>
-      <elementName>Text</elementName>
-      <elementAttributes>
-        <entry>
-          <string>Description</string>
-          <string>Pixel vertical</string>
-        </entry>
-      </elementAttributes>
-      <pos x="780" y="2060"/>
-    </visualElement>
-    <visualElement>
-      <elementName>Text</elementName>
-      <elementAttributes>
-        <entry>
-          <string>Description</string>
-          <string>Pixel clock divider</string>
-        </entry>
-      </elementAttributes>
-      <pos x="-60" y="400"/>
+      <pos x="800" y="1680"/>
     </visualElement>
     <visualElement>
       <elementName>Text</elementName>
@@ -390,6 +371,16 @@
         </entry>
       </elementAttributes>
       <pos x="2660" y="260"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Description</string>
+          <string>Pulses on frame end</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-40" y="2700"/>
     </visualElement>
   </visualElements>
   <wires>
@@ -1294,8 +1285,8 @@
       <p2 x="1100" y="180"/>
     </wire>
     <wire>
-      <p1 x="360" y="2740"/>
-      <p2 x="420" y="2740"/>
+      <p1 x="-100" y="2740"/>
+      <p2 x="360" y="2740"/>
     </wire>
     <wire>
       <p1 x="540" y="2740"/>
@@ -1308,6 +1299,10 @@
     <wire>
       <p1 x="1400" y="2740"/>
       <p2 x="1480" y="2740"/>
+    </wire>
+    <wire>
+      <p1 x="360" y="2740"/>
+      <p2 x="420" y="2740"/>
     </wire>
     <wire>
       <p1 x="220" y="1460"/>

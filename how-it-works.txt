@@ -1,0 +1,18 @@
+pixel clock pulses column counter (top left)
+    column counter counts 0-799, and then resets (on pulse 800 -> becomes pulse 0)
+
+every time the column counter resets, the line counter is pulsed
+    line counter counts 0-524, and then resets (on pulse 525 -> becomes pulse 0)
+
+on the right, the top and bottom decoders look at the column/line numbers and decode hVis and hSync, and vVis and vSync, respectively
+    the vis lines are high when the counters are on a visible column/line
+    the sync lines are low during the vga sync times, and high otherwise
+
+the pixel coordinate bus runs up the middle. Due to space/time constraints, only 16 bits are used for pixel coordinates instead of the full
+    24. this leads to a configuration where every pixel in memory represents a 2x2 "real pixel" area, with 256x256 memory pixels available
+    (512x512 real pixels)
+    this bus addresses a 64k ROM (hopefully soon RAM) which stores color pixel data as 1 pixel (2x2 "real pixels") per byte, with colors
+    assigned rrr ggg bb. 8 bit color mixing has yet to be implemented so for now it's just 3 bit color
+
+the chips just above the timing decoder (7404 and 7408 in top right) take care of blacking out the color lines when the counters leave
+    addressable or visible space. this ensures that unwriteable areas of the screen stay black and don't produce noise.
