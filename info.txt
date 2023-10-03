@@ -1,20 +1,29 @@
-operate in 640x480, pixel clock at 25.175mhz
+operate in 800x600, pixel clock at 40mhz
+but group pixels by 4! so effective resolution is 264x157, real clock at 10MHz
 
 when not in visible area, can write to pixbuffer
 
 column timing
-	visible area - 640 columns - starts on 0, ends on 639 - high 00 0000 0000 to 10 0111 1111, low else
-	front porch - 16 columns - starts on 640, ends on 655
-	sync - 96 columns - starts on 656, ends on 751 - low 10 1001 0000 to 10 1110 1111, high else
-	back porch - 48 columns - starts on 752, ends on 799
-	beyond 11 0010 0000 we do not care what the sync lines do
+	visible area - 200 columns - starts on 0, ends on 199 - high from 0 to b0 1100 0111
+	sync - 10 columns - starts on 210, ends on 241  - low from b0 1101 0010 to b0 1111 0001
+	reset on 264 - b1 0000 1000
+
+	with columns as A BCDE FGHI - and s/r flipflops
+	vis SET is on 0/counter reset, RESET is on BCF
+	sync RESET is on BCEH, SET is on BCDEI
+	counter reset is on AF
+	Common? BC
 
 lines are used to count vertical timing
-	visible area - 480 lines - starts on line 0, ends on line 479 - b00 0000 0000 to b01 1101 1111
-	front porch - 10 lines - starts on line 480, ends on line 489 - b0001 1110 0000 to b0001 1110 1001
-	sync pulse - 2 lines - starts on line 490, ends on line 491 - b01 1110 1010 to b01 1110 1011
-	back porch - 33 lines (1ms) - starts on line 492, ends on line 524 - b0001 1110 1100 to b0010 0000 1100
-	-> this constitutes a frame (525 lines) (16ms)
+	visible area - 150 lines - starts on line 0, ends on line 149 - high from 0 b1001 0101
+	sync - starts on line 150, ends on line 151 - (hacky - timing is off line - but should maybe be ok?) - low from b1001 0110 to 1001 0111
+	reset on 157 - b1001 1101
+
+	with columns as ABCD EFGH - and s/r flipflops
+	vis SET is on 0/counter reset, RESET is on ADFG
+	sync RESET is on ADFG, SET is on ADE
+	counter reset is on ADEFH
+	Common? AD
 
 video lines are only active when in visible area, otherwise low
 hsync is only low during hsync pulse, otherwise high
@@ -23,5 +32,3 @@ vsync is only low during vsync pulse, otherwise
 two signals per axis:
 - vis: high in visible area, low otherwise
 - sync: low during sync, high otherwise
-
-DO NOT! Drop top address lines when indexing pixels! That's where the funkiness comes from!
