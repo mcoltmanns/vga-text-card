@@ -1,0 +1,29 @@
+Column/line counter:
+    25.175 MHz clock
+    SN74HC161 x6
+    SN74HC20N
+
+Timing pulse generator:
+    SN74HC04N x3
+    74HC58 x2 (obsolete, but available on digi-key)
+    CD74HC4075 x2
+
+Pixel data generator:
+    28c64b (or some equivalent fast EEPROM)
+    resistors (for color lines):
+        red/green lines: (3.3k 1.8k 1k) x2
+        blue line: 1.2k 1k
+        comes to total:
+            3.3k x2
+            1.8k x2
+            1.2k x1
+            1k x3 (have)
+
+Lots of hookup wire (the good stuff! not that awful cheap stuff that snaps after 3 reconnects)
+Couple breadboards
+
+Power supply (should give up to 5v 1a from 7-15v input):
+    LM7805 x1 (have several)
+    100nf x1 (have several)
+    10uf x1 (have several)
+Or use any 5v supply
