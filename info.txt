@@ -11,10 +11,19 @@ column timing
 
 lines are used to count vertical timing
 	visible area - 480 lines - starts on line 0, ends on line 479 - b00 0000 0000 to b01 1101 1111
-	front porch - 10 lines - starts on line 480, ends on line 489 - b0001 1110 0000 to b0001 1110 1001
+	front porch - 10 lines - starts on line 480, ends on line 489 - b01 1110 0000 to b01 1110 1001
 	sync pulse - 2 lines - starts on line 490, ends on line 491 - b01 1110 1010 to b01 1110 1011
-	back porch - 33 lines (1ms) - starts on line 492, ends on line 524 - b0001 1110 1100 to b0010 0000 1100
+	back porch - 33 lines (1ms) - starts on line 492, ends on line 524 - b01 1110 1100 to b10 0000 1100
 	-> this constitutes a frame (525 lines) (16ms)
+
+if counter buses are grouped like AB CDEF GHIJ
+
+could also decode with flipflops
+	hVis: SET on column counter reset, CLEAR on ADEFGHIJ
+	hSync: CLEAR on ACF, SET on DEGHIJK
+
+	vVis: SET on row counter reset, CLEAR on BCDFGHIJ
+	vSync: CLEAR on BCDEFHJ, SET on JK
 
 video lines are only active when in visible area, otherwise low
 hsync is only low during hsync pulse, otherwise high
