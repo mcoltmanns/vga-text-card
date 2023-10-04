@@ -1,5 +1,13 @@
 operate in 640x480, pixel clock at 25.175mhz
 
+640/4=160=1010 0000 (real endstop is 159 = 1001 1111)
+480/4=120=0111 1000 (real endstop is 119 = 0111 0111)
+	bottom byte is x - goes 0-9F
+	top byte is y - goes 0-77
+divide current REAL pixel coord by 4 -> gives current effective pixel coordinate
+	shift bits right by 2 lines
+of course need to rewrite image burning script
+
 when not in visible area, can write to pixbuffer
 
 column timing
