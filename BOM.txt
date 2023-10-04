@@ -1,0 +1,33 @@
+Column/line counter:
+    25.175 MHz clock
+    SN74HC161 x6
+    SN74HC20N
+
+Timing pulse generator:
+    SN74HC04N x3 (need 3 instead of 2 beacuse have to invert top line of line counter)
+    74HC58 x2 (obsolete, but available on digi-key, and seems to be around from small retailers)
+        replaceable with a cd4048? yes. tie control lines high, then you get (ABCD) + (EFGH) (see data sheet).
+        since these only get 1 function per ic, would need 4. cost-wise, the cd4048 costs ~1eur, and the 7458s are 1eur apiece + 2eur shipping.
+            https://www.ebay.de/itm/360641101982?hash=item53f7e2809e:g:d1gAAOSwZXFfLwrU&amdata=enc%3AAQAIAAAAwLxp26y1UZPicuw7NlZXrezkwmv1dx3Ld1eDnjE%2FbgmillmxPc9gQ%2F9HWNWO%2B3PwHqotTipQ47IdrEoDi4hyll%2F4naaQxNCoBk0vpFq0Xck92k9d4Yqs9WktyhcQIxDUrId0kWZiJgqqx30xrk9UfHmwCEqg5LIRVMcNa5UBFz6P7A%2FO95PB5xYiQ1SfMkeVxyajNYloCsF5wAB4Dst3osnWPMxtZON82Yt31rtI5E5ScgEmP5Isx4s%2BzcKWUzV%2FLA%3D%3D%7Ctkp%3ABk9SR5j3gdveYg
+        -> same cost but simpler wiring with the 7458
+    CD74HC4075 x2
+
+Pixel data generator:
+    28c64b (or some equivalent fast EEPROM)
+    resistors (for color lines):
+        red/green lines: (3.3k 1.8k 1k) x2
+        blue line: 1.2k 1k
+        comes to total:
+            3.3k x2
+            1.8k x2
+            1.2k x1
+            1k x3 (have)
+
+Lots of hookup wire (the good stuff! not that awful cheap stuff that snaps after 3 reconnects)
+Couple breadboards
+
+Power supply (should give up to 5v 1a from 7-15v input):
+    LM7805 x1 (have several)
+    100nf x1 (have several)
+    10uf x1 (have several)
+Or use any 5v supply
