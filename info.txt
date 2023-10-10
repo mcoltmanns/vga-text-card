@@ -24,11 +24,11 @@ cPixH/V - tells us where we are in the current character
 
 cH/V - tells us which character we're on
 
-bottom byte of charBuf is horizontal character coord (0x00-0x4F)
-top byte of charBuf is vertical character coord (0x00-0x3B)
+bottom byte of charBuf is horizontal character coord (0x**00-0x**4F)
+top byte of charBuf is vertical character coord (0x00**-0x3B**)
 
 top byte of charGen is character code (0x00-0xFF)
 bottom nibble of charGen is character pixel horizontal (0x*0-0x*7)
 second nibble of charGen is character pixel vertical (0x0*-0x7*)
 
-now how to convert the .fon into the hex file we need?
+ascii codes do work!
