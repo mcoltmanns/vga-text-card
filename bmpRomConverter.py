@@ -8,7 +8,7 @@ for infile in sys.argv[1:]:
     f, e = os.path.splitext(infile)
     outfile = f + ".rom"
 
-    bmp = Image.open(f + ".png")
+    bmp = Image.open(f + ".png").convert("RGB")
     rom = open(outfile, "wb")
 
     width, height = bmp.size
@@ -17,8 +17,7 @@ for infile in sys.argv[1:]:
         for x in range(16):
             for charY in range(8):
                 for charX in range(8):
-                    r, g, b, a = bmp.getpixel((x * 8 + charX, y * 8 + charY))
-                    addr = (x << 12) + (y << 8) + (charY << 4) + (charX)
+                    r, g, b = bmp.getpixel((x * 8 + charX, y * 8 + charY))
                     pxval = 0
                     if r == g == b:
                         pxval = ((r >> 5) << 5) + ((g >> 5) << 2) + (b >> 6)
