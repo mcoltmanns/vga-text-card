@@ -3,7 +3,7 @@ from PIL import Image
 
 for infile in sys.argv[1:]:
     f, e = os.path.splitext(infile)
-    outfile = f + ".him"
+    outfile = f + ".rom"
     
     im = Image.open(f + ".png")
     out = open(outfile, "wb")
@@ -19,8 +19,7 @@ for infile in sys.argv[1:]:
             b = (px[2] >> 6)
             out.write((r+g+b).to_bytes(1, 'little'))
         # write padding bytes at end of each row
-        for a in range(96):
-            p = 0
-            out.write(p.to_bytes(1))
+        p = 0
+        out.write(p.to_bytes(96))
 
     out.close()
