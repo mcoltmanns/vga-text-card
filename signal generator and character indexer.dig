@@ -532,7 +532,7 @@ during frame runoff:
 - connect address/data buses to external device
 - probably good to use frame runoff going low as some kind of interrupt
 
-need 3 74hc244 per buffer chip</string>
+need 3 74hc244 per buffer chip (2 for address, 1 for data)</string>
         </entry>
       </elementAttributes>
       <pos x="2280" y="240"/>
