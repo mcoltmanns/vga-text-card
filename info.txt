@@ -32,3 +32,26 @@ bottom nibble of charGen is character pixel horizontal (0x*0-0x*7)
 second nibble of charGen is character pixel vertical (0x0*-0x7*)
 
 ascii codes do work!
+
+improvements?
+	use 74HC4060 counters - these are 12-bit and would mean much simpler counting hardware
+	generate timing pulses with latch logic (CD4043B works nicely for this - 4 SR latches in one package) instead of sequential - also big hardware simplification
+	the less hardware the better! less hardware means less jangly frequencies!
+
+	again, hCount would reset on 799 (11 0001 1111), vCount reset on 524 (10 0000 1100)
+
+	we don't care about hVis because editing the vRAM can only happen during vBlank anyways
+
+	if these values don't work, try moving them forward or back by 1.
+
+	hSync:
+		reset on 655? (10 1000 1111)
+		set on 752? (10 1111 0000)
+
+	vSync:
+		reset on 449? (01 1100 0001)
+		set 452? (01 1100 0100)
+
+	vVis:
+		set on vCount reset
+		reset on 480 (01 1110 0000)
