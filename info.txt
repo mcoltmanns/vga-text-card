@@ -39,7 +39,11 @@ if we only read from the char buffer every other frame, we get a whole ~16ms (1 
 
 how would this doublebuffer work? probably just a t or jk latch that we toggle every frame. when output is high, enable one ram/disable the other. when output is low, do opposite
 
-bottom 3 lines of each direction are pixel coordinates in that direction
+bottom 3 lines of each direction are pixel index (in character space) in that direction
+rest of the lines provide current character
+
+character index -> charbuffer -> char gen rom -> display color lines
+                    pixel index -^
 
 HARDWARE
 clock: 25.175mhz quartz clock
