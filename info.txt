@@ -1,36 +1,51 @@
 operate in 640x480, pixel clock at 25.175MHz
 
-see main branch for detailed explanation
-effective resolution is 160x120
+run a square font. this means the ratio of cols:lines of text will line up with the ratio of the monitor, aka 4:3
+see CGA8x8thick.png
+	8x8px means we get 80 cols and 60 lines.
+	so we need 8 bytes per character, so at 256 characters in the full tileset we need 256 bytes
+80x60 TERMSIZE
 
-but - we are still counting lines at full speed. what about an 8x8 font? (divide res by 8)
-	good font is ibm cga oem charset
-	at full resolution, this gives 80x60 characters. that's not bad!
-	text mode will be monochrome
+when not drawing, clock is in blanking intervals. during these blanking intervals we are allowed to write to the charbuffer.
+	back porch of the vertical signal seems like the best time to do that - 33 lines/1ms of time
 
-take counter lines
-	drop bottom 3 - gives character index - goes to screenBufROM - where the addresses to the charGenRom are written
+every 8 pixels, we can increment the address in the character buffer (since a character is 8 pixels wide)
+every 80 characters, we can increment the line count (go to a new memory page or something)
 
-	then the bottom 3 would give the position within the character
+so first step is to divide pixel clock by 8. then we have a character clock
+this character clock can also be used to count the horizontal timing.
+	visible area - 80 characters wide - starts on char 0, ends on char 79 - b0000 0000 to b0100 1111
+	front porch - 2 characters wide - starts on char 80, ends on char 81 - b0101 0000 to b0101 0001
+	sync pulse - 12 characters wide - starts on char 82, ends on char 93 - b0101 0010 to b0101 1101
+	back porch - 6 characters wide - starts on char 94, ends on char 99 - b0101 1110 to b0110 0011
+	-> this constitutes a line (100 character pulses)
+lines are used to count vertical timing
+	visible area - 480 lines - starts on line 0, ends on line 479 - b0000 0000 0000 to b0001 1101 1111
+	front porch - 10 lines - starts on line 480, ends on line 489 - b0001 1110 0000 to b0001 1110 1001
+	sync pulse - 2 lines - starts on line 490, ends on line 491 - b0001 1110 1010 to b0001 1110 1011
+	back porch - 33 lines (1ms) - starts on line 492, ends on line 524 - b0001 1110 1100 to b0010 0000 1100
+	-> this constitutes a frame (525 lines) (16ms)
 
-how to lay out chargen rom?
-	with the full tileset we have 256 characters - that means 8 lines to specify character
-	then 3+3 lines for pixel coordinate - works out to 14 lines. works fine.
-	let pixel coordinates start at top left
-	let bottom 3 pxCoord lines be x
-	let top 3 be y
+video lines are only active when in visible area, otherwise low
+hsync is only low during hsync pulse, otherwise high
+vsync is only low during vsync pulse, otherwise 
 
-cPixH/V - tells us where we are in the current character
+two signals per axis:
+- vis: high in visible area, low otherwise
+- sync: low during sync, high otherwise
 
-cH/V - tells us which character we're on
+we get 1ms to write 4,800 characters at most. that means we need to be able to write 4,800,000 characters per second (4.8MHz!)
+if we only read from the char buffer every other frame, we get a whole ~16ms (1 frame) to write 4,800 chars. this is a much more reasonable 300ch/ms, or 300,000ch/sec (only 3 khz). this seems more doable
 
-bottom byte of charBuf is horizontal character coord (0x**00-0x**4F)
-top byte of charBuf is vertical character coord (0x00**-0x3B**)
+how would this doublebuffer work? probably just a t or jk latch that we toggle every frame. when output is high, enable one ram/disable the other. when output is low, do opposite
 
-top byte of charGen is character code (0x00-0xFF)
-bottom nibble of charGen is character pixel horizontal (0x*0-0x*7)
-second nibble of charGen is character pixel vertical (0x0*-0x7*)
+bottom 3 lines of each direction are pixel coordinates in that direction
 
-ascii codes do work!
+HARDWARE
+clock: 25.175mhz quartz clock
+clock divider: 4-bit counter that resets every 8 pulses (count to 7 / b0111) TI 74HC161N
+column counter: 8-bit counter that resets every 100 pulses (count to 99 / b0110 0011) TI 74HC161N x2
+line counter: 12-bit counter that resets every 525 pulses (count to 524 / b0010 0000 1100) TI 74HC161N x3
+Do all the decoding in a GAL
 
-better-logic doesn't work in the simulator. this is because the counter modules cannot be configured to reset asynchronously. however the 74hc4060 is asynchronous, so the real build should not have this issue
+can pull sync pulses by and-combos
